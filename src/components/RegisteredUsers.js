@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Header } from "./Header";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./registeredUsers.css";
 
@@ -27,17 +27,18 @@ export function RegisteredUsers() {
 
   return (
     <>
-
-<nav class="navbar navbar-dark bg-dark">
-    <Header
-      
-      element2={
-
-          <button onClick={profileHandler} className="btn btn-primary btn-sm nav-button">Profile</button>
-      }
-    />
-</nav>
-
+      <nav class="navbar navbar-dark bg-dark">
+        <Header
+          element2={
+            <button
+              onClick={profileHandler}
+              className="btn btn-primary btn-sm nav-button"
+            >
+              Profile
+            </button>
+          }
+        />
+      </nav>
 
       <div id="container" class="container text-center">
         <div class="row row-cols-4">
@@ -57,15 +58,6 @@ export function RegisteredUsers() {
       </div>
       <div>{listItems}</div>
 
-      {/* <table>
-        <tbody>
-        <tr>
-        <th>S.no</th>
-        <th>Registered Users</th>
-        </tr>
-        {listItems}
-        </tbody>
-      </table> */}
     </>
   );
 }

@@ -5,7 +5,6 @@ import { Welcome } from './components/Welcome';
 import  Login  from './components/Login';
 import { RegisteredUsers } from './components/RegisteredUsers';
 
-// export var credentials=[];
 
 function App() {
 

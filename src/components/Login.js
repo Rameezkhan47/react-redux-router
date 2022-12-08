@@ -1,30 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { credentials } from '../App';
 import "../App.css";
-import { Input } from "./Input";
 import { Header } from "./Header";
 import { useSelector, useDispatch } from "react-redux";
 import { signupActions } from "../store";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Form, Button } from "react-bootstrap";
 import "./login.css";
 
-// export var id = ''
-// export var firstName = ''
-// export var lastName = ''
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  function onchange(e) {
-    if (e.target.name === "username") {
-      setUsername(e.target.value);
-    } else {
-      setPassword(e.target.value);
-    }
-  }
+
 
   const users = useSelector((state) => state.signup.users);
   const payload = users.find(
@@ -65,16 +53,17 @@ function Login() {
 
   return (
     <>
-    <nav class="navbar navbar-dark bg-dark">
-    <Header
-      
-      element2={
-        <Link to="signup">
-          <button className="btn btn-primary btn-sm nav-button">Sign up</button>
-        </Link>
-      }
-    />
-</nav>
+      <nav class="navbar navbar-dark bg-dark">
+        <Header
+          element2={
+            <Link to="signup">
+              <button className="btn btn-primary btn-sm nav-button">
+                Sign up
+              </button>
+            </Link>
+          }
+        />
+      </nav>
 
       <form onSubmit={login} className="rounded p-4 p-sm-5">
         <h1 className="heading"> Login </h1>
@@ -112,7 +101,6 @@ function Login() {
           </p>
         </div>
       </form>
-      
     </>
   );
 }

@@ -1,15 +1,14 @@
-.row .col-2,.col {
-    border: 1px ridge;
-    background-color: beige;
+.row .col-2,
+.col {
+  border: 1px ridge;
+  background-color: beige;
 }
-
-
 
 .col-2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-#container{
-    margin-top: 5rem;
+#container {
+  margin-top: 5rem;
 }

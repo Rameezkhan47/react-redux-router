@@ -1,13 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import React, { useState } from "react";
 import { signupActions } from "../store/index";
-import { Input } from "./Input";
-// import { credentials } from "../App";
 import { Header } from "./Header";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import { Form } from "react-bootstrap";
-// import { Button } from "react-bootstrap";
 
 export function Signup() {
   const navigate = useNavigate();
@@ -17,7 +13,6 @@ export function Signup() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const users = useSelector((state) => state.signup.users);
-
 
   const validator = users.find((user) => user.username === username);
 

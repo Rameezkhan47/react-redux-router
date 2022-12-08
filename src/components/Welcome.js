@@ -29,16 +29,18 @@ export function Welcome() {
 
   return (
     <>
-        <nav class="navbar navbar-dark bg-dark">
-    <Header
-      
-      element2={
-     
-          <button onClick={logout} className="btn btn-primary btn-sm nav-button">Logout</button>
-   
-      }
-    />
-</nav>
+      <nav class="navbar navbar-dark bg-dark">
+        <Header
+          element2={
+            <button
+              onClick={logout}
+              className="btn btn-primary btn-sm nav-button"
+            >
+              Logout
+            </button>
+          }
+        />
+      </nav>
 
       <div className="details">
         <h1>Welcome {info.firstname}</h1>
