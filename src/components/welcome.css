@@ -11,3 +11,11 @@ table {
     border-collapse: collapse;
     width: 100%;
 }
+
+.navbar {
+    margin-bottom: 5rem;
+}
+
+.reg-button{
+    margin-bottom: 2rem;
+}

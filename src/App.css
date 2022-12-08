@@ -61,7 +61,7 @@ input {
   height: 2rem;
   display: flex;
   justify-content: flex-end;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
 }
 
 /* button {
@@ -80,10 +80,10 @@ p:hover {
   cursor: pointer;
 }
 
-span {
+/* span {
   width: 800px;
   background-color: aquamarine;
-}
+} */
 .label {
   display: inline-block;
   width: 100px;

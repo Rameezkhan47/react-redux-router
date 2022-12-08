@@ -3,13 +3,12 @@ import { Header } from "./Header";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import './welcome.css'
-
-
+import "./welcome.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export function Welcome() {
   const [isShown, setIsShown] = useState(false);
-    let info = useSelector(state => state.info.info)
+  let info = useSelector((state) => state.info.info);
   const navigate = useNavigate();
 
   if (info.length === 0) {
@@ -17,50 +16,68 @@ export function Welcome() {
   }
 
   function logout() {
-    info='';
+    info = "";
     navigate("/", { replace: true });
-
   }
   function clickHandler() {
-    setIsShown(current => !current);
-    console.log('info is',info)
+    setIsShown((current) => !current);
+    console.log("info is", info);
   }
   function navigateHandler() {
-    navigate("/registered")
+    navigate("/registered");
   }
 
   return (
     <>
-      <Header element1="id" element2={<p onClick={logout}>Logout</p>} />
+        <nav class="navbar navbar-dark bg-dark">
+    <Header
+      
+      element2={
+     
+          <button onClick={logout} className="btn btn-primary btn-sm nav-button">Logout</button>
+   
+      }
+    />
+</nav>
+
       <div className="details">
         <h1>Welcome {info.firstname}</h1>
-        <div className="d-grid gap-2">
-        <button  onClick={clickHandler}>User Info</button>
-        <button onClick={navigateHandler}>Registered Users</button>
-        <div className="d-grid gap-2">
-
-</div>
-
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button onClick={clickHandler} class="btn btn-primary" type="button">
+            User Info
+          </button>
+          <button
+            onClick={navigateHandler}
+            class="btn btn-success reg-button"
+            type="button"
+          >
+            Registered Users
+          </button>
         </div>
-
 
         {isShown && (
           <div>
             {" "}
             <h2>User Information</h2>
             <table>
-                <tr>
-                   <td><b>First Name</b></td> 
-                   <td>{info.firstname}</td>
-                </tr>
-                <tr>
-                   <td><b>Last Name</b></td> 
-                   <td>{info.lastname}</td>
-                </tr>
-                <tr>
-                   <td><b>Username</b></td> 
-                   <td>{info.username}</td>
-                </tr>
+              <tr>
+                <td>
+                  <b>First Name</b>
+                </td>
+                <td>{info.firstname}</td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Last Name</b>
+                </td>
+                <td>{info.lastname}</td>
+              </tr>
+              <tr>
+                <td>
+                  <b>Username</b>
+                </td>
+                <td>{info.username}</td>
+              </tr>
             </table>
           </div>
         )}

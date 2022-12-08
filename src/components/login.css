@@ -1,0 +1,24 @@
+form {
+    background-color: #00203fff;
+    margin: auto;
+    width: 30%;
+    margin-bottom: 2em;
+    margin-top: 8rem;
+  }
+label, .login-footer {
+    color: white;
+    
+}
+
+.heading {
+    color: white;
+    text-align: center;
+  }
+  
+  .login-button {
+    margin-bottom: 1rem;
+  }
+.nav-button {
+    background-color: #0274d874;
+    border-color: #0274d874;;
+}

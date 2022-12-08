@@ -27,7 +27,18 @@ export function RegisteredUsers() {
 
   return (
     <>
-      <Header element1={<button onClick={profileHandler}>Profile</button>} />
+
+<nav class="navbar navbar-dark bg-dark">
+    <Header
+      
+      element2={
+
+          <button onClick={profileHandler} className="btn btn-primary btn-sm nav-button">Profile</button>
+      }
+    />
+</nav>
+
+
       <div id="container" class="container text-center">
         <div class="row row-cols-4">
           <div class="col">

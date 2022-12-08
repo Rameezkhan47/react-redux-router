@@ -5,11 +5,9 @@ import { Input } from "./Input";
 // import { credentials } from "../App";
 import { Header } from "./Header";
 import { Link, useNavigate } from "react-router-dom";
-// import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 // import { Form } from "react-bootstrap";
 // import { Button } from "react-bootstrap";
-
-
 
 export function Signup() {
   const navigate = useNavigate();
@@ -20,27 +18,18 @@ export function Signup() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.signup.users);
 
-  function onchange(e) {
-    if (e.target.name === "firstname") {
-      setFirstname(e.target.value);
-    } else if (e.target.name === "lastname") {
-      setLastname(e.target.value);
-    } else if (e.target.name === "username") {
-      setUsername(e.target.value);
-    } else if (e.target.name === "password") {
-      setPassword(e.target.value);
-    }
-  }
+
   const validator = users.find((user) => user.username === username);
 
   function signup(e) {
     e.preventDefault();
-    console.log('validator is', validator)
-    if (!validator){    dispatch(signupActions.signup({ firstname, lastname, username, password }));
-    console.log('signup users are', users)
-
-}
-else(alert('username already exists'))
+    console.log("validator is", validator);
+    if (!validator) {
+      dispatch(
+        signupActions.signup({ firstname, lastname, username, password })
+      );
+      console.log("signup users are", users);
+    } else alert("username already exists");
     // credentials.push({ firstname, lastname, username, password });
     //alert('New user created')
     setFirstname("");
@@ -51,57 +40,74 @@ else(alert('username already exists'))
     navigate("/");
   }
 
-
-
-
-
-
-
   return (
     <>
-         <Header
-        element2={
-          <Link to="/">
-            <button>Login</button>
-          </Link>
-        }
-      />
+      <nav class="navbar navbar-dark bg-dark">
+        <Header
+          element2={
+            <Link to="/">
+              <button className="btn btn-primary btn-sm nav-button">
+                Login
+              </button>
+            </Link>
+          }
+        />
+      </nav>
 
+      <form onSubmit={signup} className="rounded p-4 p-sm-5">
+        <h1 className="heading"> Signup </h1>
 
- 
-      <div className="signin">
-        <form className="card">
-          <Input
-            label="First Name"
-            type="text"
-            name="firstname"
-            change={onchange}
-            val={firstname}
-          />
-          <Input
-            label="Second Name"
-            type="text"
-            name="lastname"
-            change={onchange}
-            val={lastname}
-          />
-          <Input
-            label="UserName"
-            type="text"
+        <div className="form-group">
+          <label className="mb-2">First Name</label>
+          <input
+            className="form-control mb-2"
             name="username"
-            change={onchange}
-            val={username}
+            type="text"
+            onChange={(e) => setFirstname(e.target.value)}
           />
-          <Input
-            label="Password"
-            type="password"
+        </div>
+        <div className="form-group">
+          <label className="mb-2">Last Name</label>
+          <input
+            className="form-control mb-2"
+            name="username"
+            type="text"
+            onChange={(e) => setLastname(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label className="mb-2">Username</label>
+          <input
+            className="form-control mb-2"
+            name="username"
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="mb-2">Password</label>
+          <input
+            className="form-control mb-2"
             name="password"
-            change={onchange}
-            val={password}
+            type="password"
+            label="Password"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button onClick={signup}>Sign Up</button>
-        </form>
-      </div>
+        </div>
+        <div className="button-div">
+          <button type="submit" className="btn btn-primary mt-3 login-button">
+            Signup
+          </button>
+          <p className="login-footer">
+            already a user?{" "}
+            <Link to="/" className="login-footer">
+              click here
+            </Link>{" "}
+            to login
+          </p>
+        </div>
+      </form>
     </>
   );
 }
