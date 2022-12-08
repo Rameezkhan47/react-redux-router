@@ -1,0 +1,13 @@
+td {
+
+    border: 1px solid #ddd;
+    padding: 20px;
+
+
+}
+
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
