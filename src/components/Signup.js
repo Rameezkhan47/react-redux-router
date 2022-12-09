@@ -18,20 +18,18 @@ export function Signup() {
 
   function signup(e) {
     e.preventDefault();
-    console.log("validator is", validator);
+    // console.log("validator is", validator);
     if (!validator) {
       dispatch(
         signupActions.signup({ firstname, lastname, username, password })
       );
       console.log("signup users are", users);
     } else alert("username already exists");
-    // credentials.push({ firstname, lastname, username, password });
-    //alert('New user created')
+
     setFirstname("");
     setLastname("");
     setUsername("");
     setPassword("");
-    // console.log(credentials);
     navigate("/");
   }
 

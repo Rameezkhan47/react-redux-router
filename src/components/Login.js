@@ -24,7 +24,7 @@ function Login() {
     console.log(payload);
 
     if (payload) {
-      console.log("payload is", payload);
+      // console.log("payload is", payload);
       dispatch(signupActions.info(payload));
       // console.log(dispatch(signupActions.login(username)))
       dispatch(signupActions.login(username));
@@ -34,21 +34,7 @@ function Login() {
       alert("incorrect username or password");
     }
 
-    // for (let i = 0; i < credentials.length; i++) {
-    //     if (credentials[i].username === username && credentials[i].password === password) {
-    //         id = username;
-    //         firstName = credentials[i].firstname;
-    //         lastName = credentials[i].lastname;
-    //         navigate('/welcome');
-    //         setUsername('');
-    //         setPassword('');
-    //         return true;
-    //     }
-    // }
-    // id = '';
-    // firstName = '';
-    // lastName = '';
-    // alert('username or password is incorrect');
+
   }
 
   return (
