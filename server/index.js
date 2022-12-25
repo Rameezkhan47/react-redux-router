@@ -5,7 +5,11 @@ const app = express();
 var cors = require("cors");
 const mongoose = require("mongoose");
 const RegisteredUsers = require("./models/registeredUsers");
-const LoggedinUser = require("./models/loggedinUser");
+const ToDoList = require("./models/todoList");
+const {LocalStorage} =  require('node-localstorage')
+localStorage = new LocalStorage('./scratch')
+
+// const LoggedinUser = require("./models/loggedinUser");
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -56,6 +60,7 @@ app.get("/api2", async (req, res) => {
 // signup
 app.post("/api2", async (req, res) => {
   const body = req.body;
+  console.log('body is', body)
   const passwordRes = await passwordHash(body.password);
   body.salt = passwordRes.salt
   body.password = passwordRes.hash
@@ -73,6 +78,7 @@ app.post("/api2", async (req, res) => {
 // login
 app.post("/login", async (req, res) => {
   const body = req.body;
+//   body.password = await passwordHash(body.password);
   try {
     const fetchedUser = await RegisteredUsers.getUserByCredentials(
       body.username,
@@ -95,39 +101,57 @@ app.post("/login", async (req, res) => {
       message: "username already in use, try logging in",
     });
   }
-  await newRegisteredUsers.save();
 });
-//   app.get('/api3', async (req,res)=>{
-//     try{
-//       const user = await LoggedinUser.find();
 
-//       return res.json({
-//         data: user,
-//       });
-//     } catch(err) {
-//       console.log(err);
-//       res.status(500).json({ error: 'server error' });
-//     }
-//   });
 
-// app.post("/api3", async(req, res) => {
-//     const body = req.body;
-//     const newLoggedinUser = new LoggedinUser(body)
-//     await newLoggedinUser.save();
-//   });
 
-//   app.get('/api4', async (req,res)=>{
-//     try{
-//       const user = await LoggedinUser.remove({});
 
-//       return res.json({
-//         data: user,
-//       });
-//     } catch(err) {
-//       console.log(err);
-//       res.status(500).json({ error: 'server error' });
-//     }
-//   });
+  
+  app.post("/todolist", async (req, res) => {
+    try {
+       
+        
+         const user = req.body.data.username
+        console.log('user is', user)
+        const userToDo = await ToDoList.find({username:user})
+        console.log('user todo is', userToDo)
+        
+        return res.json({
+            success: true,
+            data: userToDo,
+          });
+
+  
+    //   return res.json({
+    //     data: user,
+    //   });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "server error" });
+    }
+  });
+
+
+app.post("/todo", async (req, res) => {
+    const body = req.body;
+    console.log('todo body is', body)
+    const fetchUser = await RegisteredUsers.getUserById(body.user._id)
+    console.log('fetched user is', fetchUser)
+
+console.log('fetch user id', fetchUser.username)
+const todoUpdate= {
+    username: fetchUser.username,
+    content: body.todo
+}
+console.log('todo is', todoUpdate)
+const newToDoList = new ToDoList(todoUpdate);
+await newToDoList.save()
+res.send(todoUpdate)
+
+
+    
+  });
+
 
 app.listen(5000, () => {
   console.log("listening on port 5000");

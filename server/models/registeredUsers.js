@@ -23,6 +23,9 @@ const registeredUsersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  todo: {
+    type: String,
+  },
 });
 
 registeredUsersSchema.statics.isUniqueUsername = async function (username) {
@@ -40,7 +43,7 @@ registeredUsersSchema.statics.isUniqueUsername = async function (username) {
 };
 const getUserByUsername = async function (username) {
   try {
-    console.log(username)
+    console.log(username);
     const user = await this.findOne({ username });
     return user;
   } catch (error) {
@@ -64,7 +67,7 @@ registeredUsersSchema.statics.getUserByCredentials = async function (
   password
 ) {
   try {
-    const userData = await this.findOne({username});
+    const userData = await this.findOne({ username });
     if (userData) {
       const typedPasswordHash = await generatePasswordBySalt(
         password,
@@ -90,8 +93,17 @@ registeredUsersSchema.statics.getUserByCredentials = async function (
   }
 };
 
+registeredUsersSchema.statics.getUserById = async function (_id) {
+  
+    const userData = await this.findOne({ _id});
+    return userData
+
+}
+
 const RegisteredUsers = mongoose.model(
   "RegisteredUsers",
   registeredUsersSchema
 );
 module.exports = RegisteredUsers;
+
+

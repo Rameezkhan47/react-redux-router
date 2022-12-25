@@ -60,7 +60,7 @@ function Login() {
         />
       </nav>
 
-      <form onSubmit={login} className="rounded p-4 p-sm-5">
+      <form onSubmit={login} className="rounded p-4 p-sm-5 login">
         <h1 className="heading"> Login </h1>
 
         <div className="form-group">

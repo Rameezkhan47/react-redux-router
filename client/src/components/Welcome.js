@@ -1,75 +1,62 @@
 // import { id, firstName, lastName } from "./Login";
+
+import Card from "./UI/Card/Card";
+import Button from "./UI/Button/Button";
 import { Header } from "./Header";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import "./welcome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ToDoList from "./ToDoList";
+const { v4: uuid } = require("uuid"); //For generating ID's
 
 export function Welcome() {
-  const[user,setUser]= useState({})
-  const [backendData, setBackendData] = useState([{}]);
-  const [userData,setUserData] = useState([{}]);
+  const [user, setUser] = useState({});
+  const [usernameToDo, setUsernameToDo] = useState([])
+
+
   const [isShown, setIsShown] = useState(false);
 
-  let info = useSelector((state) => state.info.info);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   fetch("/api3")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setBackendData(data);
-  //     });
-  // }, []);
-  // console.log("backend data in welcome is ", backendData);
-  // if (info.length === 0) {
-  //   return <Navigate to="/" />;
-  // }
-  // useEffect(()=>{
-  //   fetch("api3")
-  //   .then((response) => response.json())
-  //   .then((user) => {
-  //     console.log(user.data)
-  //     setBackendData(user.data)
-  //   });
+ useEffect(() => {
+  let interval = setInterval(() => {
+     const user = JSON.parse(localStorage.getItem("user_key"));
+  // console.log('user is', user)
+  // console.log('useEffect in welcome')
+  fetch('/todolist', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+  data: user}),
+  }).then(response=>response.json())
+  .then((users)=>{setUsernameToDo(users.data)})
+//  console.log(usernameToDo)
+    
+  }, 500);
+  return ()=> clearInterval(interval)
+ 
 
-  // },[])
-
-  // useEffect(()=>{
-  //    fetch("api2")
-  //   .then((response) => response.json())
-  //   .then((user) => {
-  //     console.log('welcome data',user.data)
-  //     setUserData(user.data)
-  //   });
-  // },[])
-
-  const backendUsers = userData.find(
-    (user) => user.username === backendData[0].username && user.password === backendData[0].password
-  );
-
-  // console.log('backend users are' , backendUsers)
-
-  // useEffect(() => {
-  //    fetch("http://localhost:5000/api2")
-  //     .then((response) => response.json())
-  //     .then((user) => {
-  //       console.log('login data',user.data)
-  //       setBackendData(user.data);
-  //     });
-  // }, []);
-useEffect(()=>{
-  const user = JSON.parse(localStorage.getItem('user_key'))
-  setUser(user)
-},[])
+ }, [])
+ 
 
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user_key"));
+    setUser(user);
+  }, []);
+  useEffect(() => {
+    if (localStorage.length === 0) {
+      navigate("/");
+    }
+  }, []);
 
   function logout() {
-    localStorage.removeItem('user_key')
-    // fetch("/api4")
-    // info = "";
+    localStorage.removeItem("user_key");
     navigate("/", { replace: true });
   }
   function clickHandler() {
@@ -80,9 +67,38 @@ useEffect(()=>{
   function navigateHandler() {
     navigate("/registered");
   }
+  const [note, setNote] = useState("");
+  const [contain, setContain] = useState("");
+
+  const[todo, setTodo] = useState("")
+  async function  todoHandler (e)  {
+    e.preventDefault()
+    console.log(user.username)
+    const response = await fetch("/todo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({todo, user }),
+      })
+      console.log(()=>usernameToDo)
+      //  setContain(prevContain=>{return[
+      // usernameToDo.map((data)=><li>{(data.content)}</li>)
+      // ]})
+setTodo("")
+
+}
+const todoDisplayHandler = ()=>{
+  return(
+    usernameToDo.map((data)=>console.log(data.content))
+  )
+  // console.log('username todo', usernameToDo[0].content)
+ }
+ const click = () => {
+  console.log(usernameToDo)
+ }
 
   return (
     <>
+    <button onClick={click}>click</button>
       <nav className="navbar navbar-dark bg-dark">
         <Header
           element2={
@@ -114,6 +130,42 @@ useEffect(()=>{
             Registered Users
           </button>
         </div>
+        <form onSubmit={todoHandler} className="rounded p-4 p-sm-2 todo">
+        <div className="form-group">
+          <label className="sm-5">Add a note</label>
+          <textarea rows="3" cols="30"
+            className="form-control mb-2"
+            name="todo"
+            value={todo}
+            type="text"
+            required
+            onChange={(e) => setTodo(e.target.value)}
+          />
+        </div>
+        <Button type="submit">Add todo</Button>
+      </form>
+
+        {/* <form onSubmit={todoHandler} className="rounded p-4 p-sm-2 todo">
+          <div className="form-group">
+            <label className="sm-5">Add a note</label>
+            <textarea
+              rows="3"
+              cols="30"
+              className="form-control mb-2"
+              name="todo"
+              value={note}
+              type="text"
+              required
+              onChange={(e) => setNote(e.target.value)}
+            />
+          </div>
+          <Button type="submit">Add todo</Button>
+          <Button onClick={deleteHandler}>Delete todo</Button>
+        </form> */}
+
+          <ul>
+          {contain}
+          </ul>
 
         {isShown && (
           <div>

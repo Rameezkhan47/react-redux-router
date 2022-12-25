@@ -58,7 +58,7 @@ export function Signup() {
         />
       </nav>
 
-      <form onSubmit={signup} className="rounded p-4 p-sm-5">
+      <form onSubmit={signup} className="rounded p-4 p-sm-5 signup">
         <h1 className="heading"> Signup </h1>
 
         <div className="form-group">
