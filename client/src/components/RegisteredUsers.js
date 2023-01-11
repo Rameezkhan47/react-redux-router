@@ -1,26 +1,24 @@
-import { useSelector } from "react-redux";
 import { Header } from "./Header";
 import { useState, useEffect } from "react";
-
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./registeredUsers.css";
-
+import "./registeredUsers.css"
 export function RegisteredUsers() {
-  const[userData,setUserData]=useState([{}])
-  const [backendData, setBackendData] = useState([{}]);
-  useEffect(()=>{
-    fetch("api3")
-    .then((response) => response.json())
-    .then((user) => {
-      console.log(user.data)
-      setUserData(user.data)
-    });
 
-  },[])
+  const [backendData, setBackendData] = useState([{}]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    fetch("http://localhost:5000/api2")
+    if (localStorage.length === 0) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+
+
+  useEffect(() => {
+    fetch("http://localhost:5000/signup")
       .then((response) => response.json())
       .then((user) => {
         console.log('login data',user.data)
@@ -29,8 +27,6 @@ export function RegisteredUsers() {
   }, []);
 
 
-  const navigate = useNavigate();
-  // const registeredUsers = useSelector((state) => state.signup.users);
   const listItems = backendData.map((d, index) => (
     <div className="container text-center" key={index}>
       <div className="row row-cols-4">
@@ -42,9 +38,7 @@ export function RegisteredUsers() {
     </div>
   ));
 
-  if (userData.length === 0) {
-    return <Navigate to="/" />;
-  }
+
   const profileHandler = () => {
     navigate("/welcome", { replace: true });
   };

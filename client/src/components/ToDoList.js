@@ -1,8 +1,5 @@
-import Card from './UI/Card/Card'
 import Button from './UI/Button/Button'
-import { Header } from "./Header";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ToDoList = (props) => {
@@ -13,9 +10,7 @@ const ToDoList = (props) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({todo }),
-          });
-
-    }
+          }); }
 
 
     return(

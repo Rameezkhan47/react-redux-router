@@ -1,6 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
 import React, { useState } from "react";
-import { signupActions } from "../store/index";
 import { Header } from "./Header";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,16 +9,11 @@ export function Signup() {
   const [lastname, setLastname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  // const users = useSelector((state) => state.signup.users);
-
-  // const validator = users.find((user) => user.username === username);
-
+  
   function signup(e) {
     e.preventDefault();
 
-    // console.log("validator is", validator);
-    fetch("http://localhost:5000/api2", {
+    fetch("http://localhost:5000/signup", {
       method: 'POST',
       headers: {"Content-Type": "application/json"},
       body:JSON.stringify({ firstname, lastname, username, password })
@@ -30,12 +23,7 @@ export function Signup() {
       
     });
 
-    // if (!validator) {
-    //   dispatch(
-    //     signupActions.signup({ firstname, lastname, username, password })
-    //   );
-    //   console.log("signup users are", users);
-    // } else alert("username already exists");
+
 
     setFirstname("");
     setLastname("");

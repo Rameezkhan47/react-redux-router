@@ -1,49 +1,16 @@
-// import { id, firstName, lastName } from "./Login";
-
-import Card from "./UI/Card/Card";
 import Button from "./UI/Button/Button";
 import { Header } from "./Header";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./welcome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ToDoList from "./ToDoList";
-const { v4: uuid } = require("uuid"); //For generating ID's
 
 export function Welcome() {
   const [user, setUser] = useState({});
-  const [usernameToDo, setUsernameToDo] = useState([])
-
-
+  const [contain, setContain] = useState("");
   const [isShown, setIsShown] = useState(false);
 
   const navigate = useNavigate();
-
- useEffect(() => {
-  let interval = setInterval(() => {
-     const user = JSON.parse(localStorage.getItem("user_key"));
-  // console.log('user is', user)
-  // console.log('useEffect in welcome')
-  fetch('/todolist', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-  data: user}),
-  }).then(response=>response.json())
-  .then((users)=>{setUsernameToDo(users.data)})
-//  console.log(usernameToDo)
-    
-  }, 500);
-  return ()=> clearInterval(interval)
- 
-
- }, [])
- 
-
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user_key"));
@@ -53,7 +20,7 @@ export function Welcome() {
     if (localStorage.length === 0) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   function logout() {
     localStorage.removeItem("user_key");
@@ -61,44 +28,94 @@ export function Welcome() {
   }
   function clickHandler() {
     setIsShown((current) => !current);
-
-    console.log("user is", user);
   }
   function navigateHandler() {
     navigate("/registered");
   }
-  const [note, setNote] = useState("");
-  const [contain, setContain] = useState("");
 
-  const[todo, setTodo] = useState("")
-  async function  todoHandler (e)  {
-    e.preventDefault()
-    console.log(user.username)
+  const [todo, setTodo] = useState("");
+  async function todoHandler(e) {
+    e.preventDefault();
+
+    const user = JSON.parse(localStorage.getItem("user_key"));
+
+    console.log(user.username);
     const response = await fetch("/todo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({todo, user }),
-      })
-      console.log(()=>usernameToDo)
-      //  setContain(prevContain=>{return[
-      // usernameToDo.map((data)=><li>{(data.content)}</li>)
-      // ]})
-setTodo("")
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ todo, user }),
+    });
+    const todoResponse = await response.json()
+    console.log('todo response is', todoResponse)
 
-}
-const todoDisplayHandler = ()=>{
-  return(
-    usernameToDo.map((data)=>console.log(data.content))
-  )
-  // console.log('username todo', usernameToDo[0].content)
- }
- const click = () => {
-  console.log(usernameToDo)
- }
+    setTodo("");
+    const fetchData = async () => {
+      const response = await fetch("/todolist", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: user,
+        }),
+      });
+      const todoList = await response.json();
+      console.log("welcome user.id is", todoList.data._id);
+      setContain(
+        todoList.data.map((element) => {
+          return <li key={element._id}>{element.content}</li>;
+        })
+      );
+    };
+    fetchData();
+  }
+  function displayTodo() {
+    // setTodoShown((current) => !current);
+    const fetchData = async () => {
+      const response = await fetch("/todolist", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: user,
+        }),
+      });
+      const welcomeUserData = await response.json();
+      console.log("welcome user data is", welcomeUserData);
+      setContain(
+        welcomeUserData.data.map((element) => {
+          return <li key={element._id}>{element.content}</li>;
+        })
+      );
+    };
+    fetchData();
+  }
+
+  function deleteTodo() {
+    // setTodoShown((current) => !current);
+    const fetchData = async () => {
+      const response = await fetch("/todolist", {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: user,
+        }),
+      });
+      const welcomeUserData = await response.json();
+      console.log(welcomeUserData)
+      displayTodo();
+    };
+    fetchData();
+  }
 
   return (
     <>
-    <button onClick={click}>click</button>
       <nav className="navbar navbar-dark bg-dark">
         <Header
           element2={
@@ -131,21 +148,6 @@ const todoDisplayHandler = ()=>{
           </button>
         </div>
         <form onSubmit={todoHandler} className="rounded p-4 p-sm-2 todo">
-        <div className="form-group">
-          <label className="sm-5">Add a note</label>
-          <textarea rows="3" cols="30"
-            className="form-control mb-2"
-            name="todo"
-            value={todo}
-            type="text"
-            required
-            onChange={(e) => setTodo(e.target.value)}
-          />
-        </div>
-        <Button type="submit">Add todo</Button>
-      </form>
-
-        {/* <form onSubmit={todoHandler} className="rounded p-4 p-sm-2 todo">
           <div className="form-group">
             <label className="sm-5">Add a note</label>
             <textarea
@@ -153,43 +155,44 @@ const todoDisplayHandler = ()=>{
               cols="30"
               className="form-control mb-2"
               name="todo"
-              value={note}
+              value={todo}
               type="text"
               required
-              onChange={(e) => setNote(e.target.value)}
+              onChange={(e) => setTodo(e.target.value)}
             />
           </div>
           <Button type="submit">Add todo</Button>
-          <Button onClick={deleteHandler}>Delete todo</Button>
-        </form> */}
+          <Button onClick={displayTodo}>Display todo</Button>
+          <Button onClick={deleteTodo}>Delete todo</Button>
+        </form>
 
-          <ul>
-          {contain}
-          </ul>
+        <ul>{contain}</ul>
 
         {isShown && (
           <div>
             {" "}
             <h2>User Information</h2>
             <table>
-              <tr>
-                <td>
-                  <b>First Name</b>
-                </td>
-                <td>{user.firstname}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Last Name</b>
-                </td>
-                <td>{user.lastname}</td>
-              </tr>
-              <tr>
-                <td>
-                  <b>Username</b>
-                </td>
-                <td>{user.username}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>
+                    <b>First Name</b>
+                  </td>
+                  <td>{user.firstname}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Last Name</b>
+                  </td>
+                  <td>{user.lastname}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <b>Username</b>
+                  </td>
+                  <td>{user.username}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         )}

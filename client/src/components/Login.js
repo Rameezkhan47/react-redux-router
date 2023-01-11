@@ -1,35 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import { Header } from "./Header";
-import { useSelector, useDispatch } from "react-redux";
-import { signupActions } from "../store";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./login.css";
 
 function Login() {
-  const [backendData, setBackendData] = useState([{}]);
-  useEffect(() => {
-    fetch("http://localhost:5000/api2")
-      .then((response) => response.json())
-      .then((user) => {
-        console.log("login data", user.data);
-        setBackendData(user.data);
-      });
-  }, []);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const users = useSelector((state) => state.signup.users);
 
-  const dispatch = useDispatch();
+
   async function login(e) {
     e.preventDefault();
-    console.log("before loggedInUserData is");
-
     const response = await fetch("http://localhost:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
